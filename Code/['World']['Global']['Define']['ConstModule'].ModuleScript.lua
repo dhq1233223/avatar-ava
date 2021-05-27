@@ -14,4 +14,12 @@ Const.LanguageEnum = {
     JP = 'JP' -- 日文
 }
 
+Const.PooledObjectState = {
+    IDLE = 'IDLE', --空闲状态
+    ALLOCATED = 'ALLOCATED', -- 使用中
+    EVICTION = 'EVICTION', -- 在空闲队列中，并正在测试是否满足被释放的条件
+    ABANDONED = 'ABANDONED', -- 已经废弃，将要/已经 被销毁
+    RETURNING = 'RETURNING' -- 正在使用完毕，返回池中
+}
+
 return Const

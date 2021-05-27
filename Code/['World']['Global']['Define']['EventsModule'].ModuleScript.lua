@@ -4,11 +4,14 @@
 local Events = {}
 
 -- 服务器事件列表
-Events.ServerEvents = {}
+Events.ServerEvents = {
+    'PoolPreSpawnCompleteSEvent'
+}
 
 -- 客户端事件列表
 Events.ClientEvents = {
     --通知事件
-    'NoticeEvent'
+    'NoticeEvent',
+    'PoolPreSpawnCompleteCEvent'
 }
 return Events

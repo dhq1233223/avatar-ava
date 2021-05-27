@@ -6,8 +6,14 @@
 GAME_ID = 'X0000'
 print('GAME_ID = ', GAME_ID)
 
--- Utilities
+
+
+-- Module Utility
 ModuleUtil = require(Utility.ModuleUtilModule)
+
+
+
+-- Utilities
 LuaJsonUtil = require(Utility.LuaJsonUtilModule)
 NetUtil = require(Utility.NetUtilModule)
 CsvUtil = require(Utility.CsvUtilModule)
@@ -32,8 +38,9 @@ ModuleUtil.LoadModules(Framework)
 ModuleUtil.LoadModules(Framework.Server)
 ModuleUtil.LoadModules(Framework.Client)
 
--- Globle Defines
+-- Defines
 ModuleUtil.LoadModules(Define)
+-- Xls Config
 ModuleUtil.LoadXlsModules(Xls, Config)
 
 -- Server and Clinet Modules
