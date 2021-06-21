@@ -112,7 +112,7 @@ function GenInitAndUpdateList()
     -- Plugin
     for _, m in pairs(PluginConfig) do
         if not Plugin[m].C_Module then
-            return
+            gotu Continue
         end
         ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'InitDefault', initDefaultList)
         ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'Awake', awakeList)
@@ -121,6 +121,7 @@ function GenInitAndUpdateList()
         ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'Update', updateList)
         ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'LateUpdate', lateUpdateList)
         ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'FixedUpdate', fixedUpdateList)
+        ::Continue::
     end
 end
 
