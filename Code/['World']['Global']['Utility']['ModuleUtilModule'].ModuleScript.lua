@@ -70,14 +70,16 @@ end
 -- @param _root 模块目录的节点
 -- @param @string _fn 方法名 function_name
 -- @param @table _list 存放的table
-function ModuleUtil.GetModuleListWithFunc(_root, _fn, _list)
+function ModuleUtil.GetModuleListWithFunc(_root, _fn, _list,_pl)
     assert(_root, '[ModuleUtil] Node does NOT exist!')
     assert(not string.isnilorempty(_fn), '[ModuleUtil] Function name is nil or empty!')
     assert(_list, '[ModuleUtil] List is NOT initialized!')
     local tmp, name = _root:GetChildren()
     for _, v in pairs(tmp) do
         name = (v.Name):gsub('Module', '')
-        if _G[name] and _G[name][_fn] and type(_G[name][_fn]) == 'function' then
+        if _pl and _G[_pl][name] and _G[_pl][name][_fn] and type(_G[_pl][name][_fn]) == 'function' then
+            table.insert(_list, _G[_pl][name])
+        elseif _G[name] and _G[name][_fn] and type(_G[name][_fn]) == 'function' then
             table.insert(_list, _G[name])
         end
     end

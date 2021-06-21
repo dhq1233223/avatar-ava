@@ -72,7 +72,7 @@ function InitClientCustomEvents()
     -- 将插件中的CustomEvent放入Events.ClientEvents中
     for _, m in pairs(PluginConfig) do
         if not _G[m].Events then
-            return
+            goto Continue
         end
         local evts = _G[m].Events.ServerEvents
         for __, evt in pairs(evts) do
@@ -80,6 +80,7 @@ function InitClientCustomEvents()
                 table.insert(Events.ClientEvents, evt)
             end
         end
+        ::Continue::
     end
 
     -- 生成CustomEvent节点
@@ -114,13 +115,13 @@ function GenInitAndUpdateList()
         if not Plugin[m].C_Module then
             gotu Continue
         end
-        ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'InitDefault', initDefaultList)
-        ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'Awake', awakeList)
-        ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'Start', startList)
-        ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'OnPreRender', onPreRenderList)
-        ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'Update', updateList)
-        ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'LateUpdate', lateUpdateList)
-        ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'FixedUpdate', fixedUpdateList)
+        ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'InitDefault', initDefaultList,m)
+        ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'Awake', awakeList,m)
+        ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'Start', startList,m)
+        ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'OnPreRender', onPreRenderList,m)
+        ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'Update', updateList,m)
+        ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'LateUpdate', lateUpdateList,m)
+        ModuleUtil.GetModuleListWithFunc(Plugin[m].C_Module, 'FixedUpdate', fixedUpdateList,m)
         ::Continue::
     end
 end
