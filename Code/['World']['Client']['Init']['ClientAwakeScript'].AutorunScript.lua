@@ -3,5 +3,7 @@
 -- @copyright Lilith Games, Avatar Team, Dead Ratman
 -- @author Dead Ratman
 _G.C = Client
-ModuleUtil.LoadModules(world.Client.Module, C)
+-- ModuleUtil.LoadModules(world.Client.Module.Fsm)
+-- ModuleUtil.LoadModules(world.Client.Module.FsmMgrModule)
+	ModuleUtil.LoadModules(world.Client.Module, C)
 C:Run()
