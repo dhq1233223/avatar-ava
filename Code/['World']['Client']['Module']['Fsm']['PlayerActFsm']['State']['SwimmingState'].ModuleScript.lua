@@ -4,8 +4,8 @@ local isSufaceWater = true
 
 function SwimmingState:initialize(_controller, _stateName)
     C.PlayerActState.initialize(self, _controller, _stateName)
-    C.PlayerAnimMgr:CreateSingleClipNode('anim_human_swim_freestyle_01', 1, _stateName .. 'Freestyle')
-    C.PlayerAnimMgr:CreateSingleClipNode('anim_human_swim_breaststroke_01', 1, _stateName .. 'Breaststroke')
+    self.animFreestyleNode = C.PlayerAnimMgr:CreateSingleClipNode('anim_human_swim_freestyle_01')
+    self.animBreaststrokeNode = C.PlayerAnimMgr:CreateSingleClipNode('anim_human_swim_breaststroke_01')
 end
 
 function SwimmingState:InitData()
@@ -18,8 +18,8 @@ function SwimmingState:InitData()
         end
     )
     self:AddTransition(
-        'ToSwimEndState',
-        self.controller.states['SwimEndState'],
+        'ToIdleState',
+        self.controller.states['IdleState'],
         -1,
         function()
             return not self:SwimMonitor()
@@ -29,18 +29,18 @@ end
 
 function SwimmingState:OnEnter()
     C.PlayerActState.OnEnter(self)
-    isSufaceWater = self:IsWaterSuface(0.5)
+    isSufaceWater = self:IsWaterSuface()
     if isSufaceWater then
-        C.PlayerAnimMgr:Play(self.stateName .. 'Freestyle', 0, 1, 0.3, 0.3, true, true, 1)
+        C.PlayerAnimMgr:Play(self.animFreestyleNode, 0, 1, 0.3, 0.3, true, true, 1)
     else
-        C.PlayerAnimMgr:Play(self.stateName .. 'Breaststroke', 0, 1, 0.3, 0.3, true, true, 1)
+        C.PlayerAnimMgr:Play(self.animBreaststrokeNode, 0, 1, 0.3, 0.3, true, true, 1)
     end
 end
 
 function SwimmingState:OnUpdate(dt)
     C.PlayerActState.OnUpdate(self, dt)
     self:Swim()
-    if isSufaceWater ~= self:IsWaterSuface(0.5) then
+    if isSufaceWater ~= self:IsWaterSuface() then
         self:OnEnter()
     end
 end

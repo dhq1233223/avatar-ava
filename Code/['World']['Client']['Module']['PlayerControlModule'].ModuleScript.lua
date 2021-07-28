@@ -51,7 +51,6 @@ function PlayerControl:EventBind()
     Input.OnKeyDown:Connect(
         function()
             if Input.GetPressKeyData(JUMP_KEY) == 1 then
-				print('GetJumpKey')
                 this:PlayerJump()
             end
             if Input.GetPressKeyData(CROUCH_KEY) == 1 then
@@ -62,16 +61,8 @@ function PlayerControl:EventBind()
             end
         end
     )
-    localPlayer.OnCollisionBegin:Connect(
-        function(_hitObj, _hitPos)
-            print(_hitObj)
-            if _hitObj.Name == 'SitPoint' then
-                print(_hitObj, '------------------------------------------')
-                this:PlayerSit(_hitObj)
-			end
-		end
-    )
 end
+
 --获取按键盘时的移动方向最终取值
 function GetKeyValue()
     moveForwardAxis = Input.GetPressKeyData(FORWARD_KEY) > 0 and 1 or 0
@@ -129,15 +120,8 @@ function PlayerControl:PlayerFly()
     C.FsmMgr.playerActCtrl:CallTrigger('FlyBeginState')
 end
 
--- 坐下逻辑
-function PlayerControl:PlayerSit(_sitPoint)
-    C.FsmMgr.playerActCtrl.seatObj = _sitPoint
-    C.FsmMgr.playerActCtrl:CallTrigger('SitBeginState')
-end
-
 function PlayerControl:Update(dt)
     GetMoveDir()
-	-- print(this.finalDir)
 end
 
 return PlayerControl

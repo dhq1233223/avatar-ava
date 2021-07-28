@@ -7,10 +7,17 @@ function SwimIdleState:initialize(_controller, _stateName)
         {'anim_human_swimup_01', 0.2, 1.0},
         {'anim_human_swimdown_01', -0.2, 1.0}
     }
-    C.PlayerAnimMgr:Create1DClipNode(anims, 'speedY', _stateName)
+    self.animNode = C.PlayerAnimMgr:Create1DClipNode(anims, 'speedY')
 end
 
 function SwimIdleState:InitData()
+    self:AddAnyState(
+        'ToSwimIdleState',
+        -1,
+        function()
+            return self:SwimMonitor() and not localPlayer:IsSwimming()
+        end
+    )
     self:AddTransition(
         'ToSwimmingStartState',
         self.controller.states['SwimmingStartState'],
@@ -20,8 +27,8 @@ function SwimIdleState:InitData()
         end
     )
     self:AddTransition(
-        'ToSwimEndState',
-        self.controller.states['SwimEndState'],
+        'ToIdleState',
+        self.controller.states['IdleState'],
         -1,
         function()
             return not self:SwimMonitor()
@@ -36,14 +43,13 @@ function SwimIdleState:OnEnter()
         localPlayer.RotationRate = EulerDegree(0, 240, 0)
     end
 
-    C.PlayerAnimMgr:Play(self.stateName, 0, 1, 0.2, 0.2, true, true, 1)
+    C.PlayerAnimMgr:Play(self.animNode, 0, 1, 0.2, 0.2, true, true, 1)
 end
 
 function SwimIdleState:OnUpdate(dt)
     C.PlayerActState.OnUpdate(self, dt)
     self:SpeedMonitor()
     self:UpAndDown()
-    self:Swim(0)
 end
 
 function SwimIdleState:OnLeave()

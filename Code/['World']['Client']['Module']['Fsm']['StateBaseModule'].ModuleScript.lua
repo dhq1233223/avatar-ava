@@ -29,7 +29,7 @@ function StateBase:AddAnyState(_transitonName, _dur, ...)
     table.insert(self.anyState, transiton)
 end
 
---重置transition和\anyState
+--重置transition和anyState
 function StateBase:Reset()
     for _, trans in pairs(self.transitions) do
         trans:Reset()

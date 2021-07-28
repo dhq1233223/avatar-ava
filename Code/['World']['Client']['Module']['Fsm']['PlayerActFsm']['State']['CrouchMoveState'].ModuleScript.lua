@@ -42,7 +42,7 @@ end
 
 function CrouchMoveState:OnEnter()
     C.PlayerActState.OnEnter(self)
-    if self.controller.stopInfo.footIndex == 1 then
+    if self.controller.foot == 1 then
         C.PlayerAnimMgr:Play(self.animRightNode, 0, 1, 0.2, 0.2, true, true, 1)
     else
         C.PlayerAnimMgr:Play(self.animLeftNode, 0, 1, 0.2, 0.2, true, true, 1)
@@ -57,7 +57,11 @@ end
 
 function CrouchMoveState:OnLeave()
     C.PlayerActState.OnLeave(self)
-    self.controller:GetStopInfo()
+    if not self:GetStopInfo() then
+        self.controller.foot = 2
+    else
+        self.controller.foot = 1
+    end
 end
 
 return CrouchMoveState

@@ -2,10 +2,8 @@ local CrouchIdleState = class('CrouchIdleState', C.PlayerActState)
 
 function CrouchIdleState:initialize(_controller, _stateName)
     C.PlayerActState.initialize(self, _controller, _stateName)
-    C.PlayerAnimMgr:CreateSingleClipNode('anim_man_crouch_idle_02', 1, _stateName .. 'Right', 1)
-    C.PlayerAnimMgr:CreateSingleClipNode('anim_man_crouch_idle_01', 1, _stateName .. 'Left', 1)
-    C.PlayerAnimMgr:CreateSingleClipNode('anim_woman_crouch_idle_02', 1, _stateName .. 'Right', 2)
-    C.PlayerAnimMgr:CreateSingleClipNode('anim_woman_crouch_idle_01', 1, _stateName .. 'Left', 2)
+    self.animRightNode = C.PlayerAnimMgr:CreateSingleClipNode('anim_woman_crouch_idle_02')
+    self.animLeftNode = C.PlayerAnimMgr:CreateSingleClipNode('anim_woman_crouch_idle_01')
 end
 function CrouchIdleState:InitData()
     self:AddTransition(
@@ -36,10 +34,10 @@ end
 
 function CrouchIdleState:OnEnter()
     C.PlayerActState.OnEnter(self)
-    if self.controller.stopInfo.footIndex == 1 then
-        C.PlayerAnimMgr:Play(self.stateName .. 'Right', 0, 1, 0.2, 0.2, true, true, 1)
+    if self.controller.foot == 1 then
+        C.PlayerAnimMgr:Play(self.animRightNode, 0, 1, 0.2, 0.2, true, true, 1)
     else
-        C.PlayerAnimMgr:Play(self.stateName .. 'Left', 0, 1, 0.2, 0.2, true, true, 1)
+        C.PlayerAnimMgr:Play(self.animLeftNode, 0, 1, 0.2, 0.2, true, true, 1)
     end
 end
 

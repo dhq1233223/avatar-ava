@@ -2,15 +2,15 @@ local SwimmingStartState = class('SwimmingStartState', C.PlayerActState)
 
 function SwimmingStartState:initialize(_controller, _stateName)
     C.PlayerActState.initialize(self, _controller, _stateName)
-    C.PlayerAnimMgr:CreateSingleClipNode('anim_human_idletofreestyle_01', 1, _stateName .. 'Freestyle')
-    C.PlayerAnimMgr:CreateSingleClipNode('anim_human_idletobreaststroke_01', 1, _stateName .. 'Breaststroke')
+    self.animFreestyleNode = C.PlayerAnimMgr:CreateSingleClipNode('anim_human_idletofreestyle_01')
+    self.animBreaststrokeNode = C.PlayerAnimMgr:CreateSingleClipNode('anim_human_idletobreaststroke_01')
 end
 
 function SwimmingStartState:InitData()
     self:AddTransition('ToSwimmingState', self.controller.states['SwimmingState'], 1)
     self:AddTransition(
-        'ToSwimEndState',
-        self.controller.states['SwimEndState'],
+        'ToIdleState',
+        self.controller.states['IdleState'],
         -1,
         function()
             return not self:SwimMonitor()
@@ -30,9 +30,9 @@ function SwimmingStartState:OnEnter()
     C.PlayerActState.OnEnter(self)
     if self:IsWaterSuface() then
         print('Freestyle')
-        C.PlayerAnimMgr:Play(self.stateName .. 'Freestyle', 0, 1, 0.1, 0.1, true, false, 1)
+        C.PlayerAnimMgr:Play(self.animFreestyleNode, 0, 1, 0.1, 0.1, true, false, 1)
     else
-        C.PlayerAnimMgr:Play(self.stateName .. 'Breaststroke', 0, 1, 0.1, 0.1, true, false, 1.5)
+        C.PlayerAnimMgr:Play(self.animBreaststrokeNode, 0, 1, 0.1, 0.1, true, false, 1.5)
     end
 end
 

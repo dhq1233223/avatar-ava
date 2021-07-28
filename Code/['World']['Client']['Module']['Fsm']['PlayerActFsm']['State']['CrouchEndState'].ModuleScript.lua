@@ -2,8 +2,7 @@ local CrouchEndState = class('CrouchEndState', C.PlayerActState)
 
 function CrouchEndState:initialize(_controller, _stateName)
     C.PlayerActState.initialize(self, _controller, _stateName)
-    C.PlayerAnimMgr:CreateSingleClipNode('anim_man_crouchtostand_02', 1, _stateName, 1)
-    C.PlayerAnimMgr:CreateSingleClipNode('anim_woman_crouchtostand_02', 1, _stateName, 2)
+    self.animNode = C.PlayerAnimMgr:CreateSingleClipNode('anim_woman_crouchtostand_02')
 end
 function CrouchEndState:InitData()
     self:AddTransition('ToIdleState', self.controller.states['IdleState'], 0.1)
@@ -19,7 +18,7 @@ end
 
 function CrouchEndState:OnEnter()
     C.PlayerActState.OnEnter(self)
-    C.PlayerAnimMgr:Play(self.stateName, 0, 1, 0.1, 0.1, true, false, 1)
+    C.PlayerAnimMgr:Play(self.animNode, 0, 1, 0.1, 0.1, true, false, 1)
 end
 
 function CrouchEndState:OnUpdate(dt)
@@ -28,6 +27,7 @@ end
 
 function CrouchEndState:OnLeave()
     C.PlayerActState.OnLeave(self)
+    self.controller.foot = 2
     localPlayer:UnCrouch()
 end
 

@@ -2,21 +2,13 @@ local MoveState = class('MoveState', C.PlayerActState)
 
 function MoveState:initialize(_controller, _stateName)
     C.PlayerActState.initialize(self, _controller, _stateName)
-    local animsM = {
-        {'anim_man_idle_01', 0.0, 1.0},
-        {'anim_man_walkfront_01', 0.25, 1.0},
-        {'anim_man_runfront_01', 0.5, 1.0},
-        {'anim_man_sprint_01', 1, 1.0}
-    }
-
-    local animsW = {
+    local anims = {
         {'anim_woman_idle_01', 0.0, 1.0},
-        {'anim_woman_walkfront_01', 0.25, 1.0},
+        {'anim_woman_walkfront_01', 0.15, 1.0},
         {'anim_woman_runfront_01', 0.5, 1.0},
         {'anim_woman_sprint_01', 1, 1.0}
     }
-    C.PlayerAnimMgr:Create1DClipNode(animsM, 'speedXZ', _stateName, 1)
-    C.PlayerAnimMgr:Create1DClipNode(animsW, 'speedXZ', _stateName, 2)
+    self.animNode = C.PlayerAnimMgr:Create1DClipNode(anims, 'speedXZ')
 end
 function MoveState:InitData()
     self:AddTransition(
@@ -24,7 +16,7 @@ function MoveState:InitData()
         self.controller.states['MoveStopState'],
         -1,
         function()
-            return not self:MoveMonitor() or self:WallMonitor()
+            return not self:MoveMonitor()
         end
     )
     self:AddTransition(
@@ -63,11 +55,10 @@ end
 
 function MoveState:OnEnter()
     C.PlayerActState.OnEnter(self)
-    C.PlayerAnimMgr:Play(self.stateName, 0, 1, 0.2, 0.2, true, true, 1)
+    C.PlayerAnimMgr:Play(self.animNode, 0, 1, 0.2, 0.2, true, true, 1)
 end
 
 function MoveState:OnUpdate(dt)
-    C.PlayerCam.curCamera.CameraMode = Enum.CameraMode.Smart
     C.PlayerActState.OnUpdate(self, dt)
     self:SpeedMonitor()
     self:Move(true)
@@ -75,7 +66,6 @@ function MoveState:OnUpdate(dt)
 end
 function MoveState:OnLeave()
     C.PlayerActState.OnLeave(self)
-    self.controller:GetStopInfo()
 end
 
 return MoveState
